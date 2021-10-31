@@ -7,6 +7,13 @@ abstract class OgrenciListViewModel extends State<OgrenciList> {
   late OgrenciDatabaseProvider ogrenciDatabaseProvider;
   OgrenciModel ogrenciModel =
       OgrenciModel(ogrenciAd: '', ogrenciNu: null, sinifId: null);
+  List<OgrenciModel> ogrenciList = [];
+
+  Future getOgrenciList() async {
+    ogrenciList = await ogrenciDatabaseProvider.getOgrenciList();
+    setState(() {});
+  }
+
   @override
   void initState() {
     super.initState();
