@@ -10,7 +10,7 @@ abstract class OgrenciListViewModel extends State<OgrenciList> {
   List<OgrenciModel> ogrenciList = [];
 
   Future getOgrenciList() async {
-    ogrenciList = await ogrenciDatabaseProvider.getOgrenciList();
+    ogrenciList = await ogrenciDatabaseProvider.getList();
     setState(() {});
   }
 
@@ -22,7 +22,7 @@ abstract class OgrenciListViewModel extends State<OgrenciList> {
   }
 
   Future<void> saveModel() async {
-    final result = await ogrenciDatabaseProvider.ekleOgrenci(ogrenciModel);
+    final result = await ogrenciDatabaseProvider.insertItem(ogrenciModel);
     print(result);
   }
 }

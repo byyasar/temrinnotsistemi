@@ -1,7 +1,9 @@
 import 'package:sqflite/sqflite.dart';
+import 'package:temrinnotsistemi/core/init/database/database_model.dart';
+import 'package:temrinnotsistemi/core/init/database/database_provier.dart';
 import 'package:temrinnotsistemi/view/model/ogrenci_model.dart';
 
-class OgrenciDatabaseProvider {
+class OgrenciDatabaseProvider extends DatabaseProvider {
   final String _ogrenciDatabaseName = "ogrenciDatabase1";
   final String _ogrenciTableName = "ogrenci";
   final String _columnOgrenciAd = "ogrenciAd";
@@ -25,14 +27,29 @@ class OgrenciDatabaseProvider {
           $_columnOgrenciNu INTEGER ,
           $_columnOgrenciSinifId INTEGER)''');
   }
-
-  Future<List<OgrenciModel>> getOgrenciList() async {
+/*
+  Future<OgrenciModel?> getOgrenci(int id) async {
     if (database != null) open();
-    List<Map> ogrenciMaps = await database.query(_ogrenciTableName);
-    return ogrenciMaps.map((e) => OgrenciModel.fromJson(e)).toList();
+    final ogrenciMap = await database.query(
+      _ogrenciTableName,
+      columns: [_columnOgrenciId, _columnOgrenciAd],
+      where: '$_columnOgrenciId=?',
+      whereArgs: [id],
+    );
+    if (ogrenciMap.isNotEmpty) {
+      return OgrenciModel.fromJson(ogrenciMap.first);
+    } else {
+      return null;
+    }
+  }*/
+
+  @override
+  Future<void> close() async {
+    await database.close();
   }
 
-  Future<OgrenciModel?> getOgrenci(int id) async {
+  @override
+  Future<DatabaseModel?> getItem(int id) async {
     if (database != null) open();
     final ogrenciMap = await database.query(
       _ogrenciTableName,
@@ -47,7 +64,43 @@ class OgrenciDatabaseProvider {
     }
   }
 
-  Future<int?> deleteOgrenci(int id) async {
+/*  Future<List<OgrenciModel>> getOgrenciList() async {
+    if (database != null) open();
+    List<Map> ogrenciMaps = await database.query(_ogrenciTableName);
+    return ogrenciMaps.map((e) => OgrenciModel.fromJson(e)).toList();
+  }*/
+  @override
+  Future<List<OgrenciModel>> getList() async {
+    if (database != null) open();
+    List<Map> ogrenciMaps = await database.query(_ogrenciTableName);
+    return ogrenciMaps.map((e) => OgrenciModel.fromJson(e)).toList();
+  }
+
+/* Future<int?> ekleOgrenci(OgrenciModel ogrenciModel) async {
+    if (database != null) open();
+    final ogrenciMap =
+        await database.insert(_ogrenciTableName, ogrenciModel.toJson());
+    return ogrenciMap;
+  } */
+  @override
+  Future<int?> insertItem(ogrenciModel) async {
+    if (database != null) open();
+    final ogrenciMap =
+        await database.insert(_ogrenciTableName, ogrenciModel.toJson());
+    return ogrenciMap;
+  }
+
+/*Future<int?> deleteOgrenci(int id) async {
+    if (database != null) open();
+    final ogrenciMap = await database.delete(
+      _ogrenciTableName,
+      where: '$_columnOgrenciId=?',
+      whereArgs: [id],
+    );
+    return ogrenciMap;
+  }*/
+  @override
+  Future<int?> removeItem(int id) async {
     if (database != null) open();
     final ogrenciMap = await database.delete(
       _ogrenciTableName,
@@ -56,8 +109,7 @@ class OgrenciDatabaseProvider {
     );
     return ogrenciMap;
   }
-
-  Future<int?> updateOgrenci(int id, OgrenciModel ogrenciModel) async {
+  /*Future<int?> updateOgrenci(int id, OgrenciModel ogrenciModel) async {
     if (database != null) open();
     final ogrenciMap = await database.update(
       _ogrenciTableName,
@@ -66,16 +118,17 @@ class OgrenciDatabaseProvider {
       whereArgs: [id],
     );
     return ogrenciMap;
-  }
+  } */
 
-  Future<int?> ekleOgrenci(OgrenciModel ogrenciModel) async {
+  @override
+  Future<int?> updateItem(int id, DatabaseModel ogrenciModel) async {
     if (database != null) open();
-    final ogrenciMap =
-        await database.insert(_ogrenciTableName, ogrenciModel.toJson());
+    final ogrenciMap = await database.update(
+      _ogrenciTableName,
+      ogrenciModel.toJson(),
+      where: '$_columnOgrenciId=?',
+      whereArgs: [id],
+    );
     return ogrenciMap;
-  }
-
-  Future<void> close() async {
-    await database.close();
   }
 }

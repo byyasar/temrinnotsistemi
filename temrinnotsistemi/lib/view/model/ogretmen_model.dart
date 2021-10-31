@@ -3,19 +3,19 @@ import 'package:temrinnotsistemi/view/model/ogrenci_model.dart';
 
 class OgretmenDatabaseProvider extends DatabaseProvider<OgrenciModel> {
   @override
-  Future<OgrenciModel> getItem(int id) {
+  Future<OgrenciModel?> getItem(int id) {
     // TODO: implement getItem
     throw UnimplementedError();
   }
 
   @override
-  Future<List<OgrenciModel>> getList() {
+  Future<List<OgrenciModel>?> getList() {
     // TODO: implement getList
     throw UnimplementedError();
   }
 
   @override
-  Future<bool> insertItem(OgrenciModel model) {
+  Future<int?> insertItem(OgrenciModel model) {
     // TODO: implement insertItem
     throw UnimplementedError();
   }
@@ -27,14 +27,15 @@ class OgretmenDatabaseProvider extends DatabaseProvider<OgrenciModel> {
   }
 
   @override
-  Future<bool> removeItem(int id) {
+  Future<int?> removeItem(int id) {
     // TODO: implement removeItem
     throw UnimplementedError();
   }
 
   @override
-  Future<bool> updateItem(int id, OgrenciModel model) {
+  Future<int?> updateItem(int id, OgrenciModel model) {
     // TODO: implement updateItem
     throw UnimplementedError();
   }
+ 
 }
